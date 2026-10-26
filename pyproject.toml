@@ -1,0 +1,14 @@
+[project]
+name = "ai-mediassist"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Chittaksh Khadse", email = "khadse.chittaksh@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+ai-mediassist = "ai-mediassist:main"
+
