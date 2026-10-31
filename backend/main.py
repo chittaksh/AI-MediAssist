@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 from backend.managers.chroma_manager import search_collection
-from backend.RAG.rag_chain import generate_answer
+from backend.RAG.rag_chain import rag_search
 from backend.managers.auth_manager import create_table
 from backend.routers import chroma, files, users
 
@@ -70,7 +70,7 @@ def health() -> dict[str, object]:
 def query_model(query_request: QueryRequest):
     """Accept a query and return the model's response."""
     # Placeholder implementation - replace with actual model inference logic
-    return {"response": generate_answer(query_request.input)}
+    return {"response": rag_search.invoke({"query": query_request.input})}
 
 
 @app.post("/search-documents")

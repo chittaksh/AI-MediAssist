@@ -5,16 +5,17 @@ from pathlib import Path
 from backend.logger import logging  ## for logging
 
 from backend.managers.chroma_manager import add_to_collection, get_next_id  ## for storing vectors in chromadb
+from backend.tracing import traced_function  ## Used for tracing
 
 from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader, TextLoader   ## to process pdf doc
-from langchain_text_splitters import RecursiveCharacterTextSplitter  ## Used for chunking
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 RAW_DIR = BASE_DIR/ "data" / "raw"  ## Path to the raw data directory
 
-
 ### STEP 1: LOAD DOCS
+@traced_function(name="load_docs")
 def load_docs(filename: str = None):
     """Load documents from the raw data directory. If a filename is provided, load only that file; otherwise, load all PDF files in the directory."""
     if not RAW_DIR.is_dir():
@@ -66,6 +67,7 @@ def load_docs(filename: str = None):
 
 
 ### STEP 2: SPLIT DOCS into Chunks
+@traced_function(name="split_docs")
 def split_docs(docs):
     splitter = RecursiveCharacterTextSplitter(
         chunk_size = 1000, ##approx size of each chunk is 1000 characters. 
@@ -76,6 +78,7 @@ def split_docs(docs):
 
 
 ## STEP 3: STORE chunks in chromadb
+@traced_function(name="store_chunks")
 def store_chunks(chunks, filename: str = None):
     """
     Store the provided chunks and their corresponding metadata in the ChromaDB collection.
@@ -91,6 +94,7 @@ def store_chunks(chunks, filename: str = None):
 
 
 ## STEP 4: MAIN INGESTION PIPELINE
+@traced_function(name="ingest_documents")
 def ingest_documents(filename: str = None):
     """
     Ingest documents from the data directory, split them into chunks, and store them in the ChromaDB collection.

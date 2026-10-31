@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import date
 
 BASE_DIR = Path(__file__).resolve().parent
-LOG_DIR = BASE_DIR / "logs"
+LOG_DIR = BASE_DIR / "data" / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 
 # 1. Configure the logging system

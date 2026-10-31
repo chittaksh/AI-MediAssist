@@ -11,3 +11,6 @@ requests
 chromadb
 groq
 docx2txt
+langgraph 
+langchain-core 
+pydantic
